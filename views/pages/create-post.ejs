@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title> Create Post</title>
+        <link style="text/css" rel="stylesheet" href="/css/style.css"
+    </head>
+    
+    <body>
+        <p> Enter the title, URL, and subreddit ID to create a page! </p>
+    	<form action="/createPost" method="POST"> 
+        	Title: <input type="text" name="title" placeholder="Enter the title:"> <br/>
+    		URL: <input type="text" name="url" placeholder="Enter the url:"> <br/>
+    		<button type="submit">Post!</button>
+    		<input type="reset" value="reset" /> 
+    	</form>        
+    </body>
+    
+</html>

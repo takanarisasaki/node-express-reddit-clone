@@ -1,0 +1,98 @@
+<!DOCTYPE>
+<html lang="en">
+    <head>
+        <% include ../partials/head %>
+    </head>
+    
+    <body>
+        <header>
+            <% include ../partials/header %>
+        </header>
+
+        
+        <main>
+            
+            <section class="logout">
+                <b> You are currently logged in! </b> <br> <br> 
+		
+        		<form action="/logout" method="POST"> 
+        			<button type="submit"> logout! </button>
+        		</form>
+        		</br>
+            </section>
+            
+            
+            <section class="create_post">
+        		<h2> <u> CREATE: </u> </h2> <br/>
+		        <a href="/createPost"> CREATE A POST! </a> <br> <br> <br/>      
+            </section>
+
+
+            <section class="posts">
+                <h1> List of posts: </h1> <br/>
+        		<ul class="contents_list">
+        		    
+        		    
+        		    
+        			<% posts.forEach(function(post) { %>
+        			
+            			<div class="each_post">
+            			    
+            			    <div class="post_info">
+            			        <div class="post_main_info">
+            			            <li> <strong> <%=post.title%> </strong> / </li>
+            			            <li> <a href= <%=post.url%> > <em> <%=post.url%> </em> </a> </li>
+            			        </div>
+                			    <div class="post_sub_info">
+                			        <div class="post_created_by">
+                			           <li> Created by: <%=post.user.username%> </li> 
+                			        </div>
+                			        <div class="post_created_at">
+                			            <li> Created at: <%=post.createdAt%> </li>
+                			        </div>
+                			    </div>
+            			    </div>
+            			    
+            			    <div class="vote_info">
+            			        
+            			        <div class="upvote">
+                    			    <form action="/<%=sort%>" method="post">
+            							<input type="hidden" name="vote" value="1"> 
+            							<input type="hidden" name="postId" value="<%=post.id%>">
+            							<input type="hidden" name="userId" value="<%=request.loggedInUser.userId%>">
+            							<button type="submit"> upvote this </button>
+            						</form>
+        						</div>
+        						
+        						<div class="vote_score">
+                                    <li> Vote Score: <%=post.voteScore%> </li> <br/>  
+                                </div>
+                                
+                                <div class="downvote">
+            						<form action="/<%=sort%>" method="post">
+            							<input type="hidden" name="vote" value="-1">
+            							<input type="hidden" name="postId" value="<%=post.id%>">
+            							<input type="hidden" name="userId" value="<%=request.loggedInUser.userId%>">
+            							<button type="submit"> downvote this </button>
+            						</form>
+        						</div>
+        					</div>
+    					</div>
+					
+        			    <br/>
+        			<% }); %>
+        			
+        			
+        			
+        		</ul>
+            </section>
+
+			
+        </main>
+
+        
+        <footer>
+            <% include ../partials/footer %>
+        </footer>
+    </body>
+</html>

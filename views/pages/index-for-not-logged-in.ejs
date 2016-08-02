@@ -1,0 +1,85 @@
+<!DOCTYPE>
+<html lang="en">
+    <head>
+        <% include ../partials/head %>
+    </head>
+    
+    <body>
+        <header class="header_nav">
+            <% include ../partials/header %>
+        </header>
+
+        
+        <main>
+            
+            <div class="login_and_signup_and_welcome">
+                
+                <div class="welcome">
+                    <h1> Welcome to Reddit Clone! </h1>
+                </div>
+                
+                <div class="login_and_signup" >
+                    <section class="login_function">
+                        <fieldset>
+                        <legend> Login! </legend>
+                        	<form action="/login" method="POST"> 
+                            	<input type="text" name="username" placeholder="Enter your username"> <br/>
+                        		<input type="password" name="password" placeholder="Enter your password"><br/>
+                                <button type="submit"> Login! </button>
+                                <input type="reset" value="reset" /> <br/>
+                            </form> 
+                        </fieldset>
+                        <br/>
+                    </section>
+                
+                    <section class="signup_function">
+                        <fieldset>
+                        <legend> Sign up! </legend>
+                            <form action="/signup" method="POST"> 
+                                <input type="text" name="username" placeholder="Enter your username"> <br/>
+                                <input type="text" name="password" placeholder="Enter your password"> <br/>
+                                <button type="submit"> Create! </button>
+                                <input type="reset" value="reset" /> <br/>
+                            </form>
+                        </fieldset>
+                        <br/>
+                    </section>
+                </div>
+            </div>
+            
+            <section class="posts">
+                <h1> List of posts: </h1> <br/>
+        		<ul class="contents-list">
+        			<% posts.forEach(function(post) { %>
+            			<div class="each_post">
+            			    <div class="post_info">
+            			        <div class="post_main_info">
+                    			    <li> <strong> <%=post.title%> </strong> /</li>
+                    			    <li> <a href= <%=post.url%> > <em> <%=post.url%> </em> </a> </li>
+                			    </div>
+                			    <div class="post_sub_info">
+                			        <div class="post_created_by">
+                			            <li> Post Created By: <%=post.user.username%> </li>
+                			        </div>
+                			        <div class="post_created_at">
+                			            <li> Post Created at: <%=post.createdAt%> </li>
+                			        </div>
+                			    </div>
+            			    </div>
+            			    <div class="vote_info_for_not_loggedin">
+            			        <li> Vote Score: <%=post.voteScore%> </li>
+            			    </div>
+            			</div>
+            			<br/>
+        			<% }); %>
+        		</ul>
+            </section>
+
+        </main>
+
+        
+        <footer>
+            <% include ../partials/footer %>
+        </footer>
+    </body>
+</html>

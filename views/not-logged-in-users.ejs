@@ -1,0 +1,32 @@
+<section class="login">
+    <p> Enter your username and password </p>
+	<form action="/login" method="POST"> 
+    	username: <input type="text" name="username" placeholder="Enter your username">
+		password: <input type="password" name="password" placeholder="Enter your password">
+        <button type="submit"> Login! </button>
+    </form>  
+</section>
+
+
+<section class="signup">
+    <p> Enter a username and password to sign up! </p>
+    <form action="/signup" method="POST"> 
+        <input type="text" name="username" placeholder="Enter your username">
+        <input type="text" name="password" placeholder="Enter your password">
+        <button type="submit">Create!</button>
+    </form>
+</section>
+
+
+<section class="create-li">
+    
+    <ul>
+        <li> Post Title: <%=post.title%> </li>
+        <li> <a href= <%=post.url%> > <%=post.url%> </li>
+        <li> Post ID: <%=post.id%> </li>
+        <li> Post Username: <%=post.user.username%> </li>
+        <li> Post Created at <%=post.createdAt%> </li>
+        <li> Vote Score: <%=post.voteScore%> </li>
+    </ul>
+
+</section>
