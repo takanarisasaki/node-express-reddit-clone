@@ -5,11 +5,11 @@
     </head>
     
     <body>
+
         <header class="header_nav">
             <% include ../partials/header %>
         </header>
 
-        
         <main>
             
             <div class="login_and_signup_and_welcome">
@@ -35,7 +35,7 @@
                     <section class="signup_function">
                         <fieldset>
                         <legend> Sign up! </legend>
-                            <form action="/signup" method="POST"> 
+                            <form id="signup" action="/signup" method="POST"> 
                                 <input type="text" name="username" placeholder="Enter your username"> <br/>
                                 <input type="text" name="password" placeholder="Enter your password"> <br/>
                                 <button type="submit"> Create! </button>
@@ -59,10 +59,10 @@
                 			    </div>
                 			    <div class="post_sub_info">
                 			        <div class="post_created_by">
-                			            <li> Post Created By: <%=post.user.username%> </li>
+                			            <li> Created By: <%=post.user.username%> </li>
                 			        </div>
                 			        <div class="post_created_at">
-                			            <li> Post Created at: <%=post.createdAt%> </li>
+                			            <li> Created at: <%=post.createdAt%> </li>
                 			        </div>
                 			    </div>
             			    </div>
@@ -81,5 +81,8 @@
         <footer>
             <% include ../partials/footer %>
         </footer>
+        
+        <script src='js/main.js'></script>
+        
     </body>
 </html>

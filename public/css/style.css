@@ -5,7 +5,6 @@
 
 body {
     background:-webkit-gradient(linear, left top, right top, color-stop(1%, #a6fdee), color-stop(99%,#e6fefa));
-    
 }
 
 /*--------------------------------------------------------------------------------------------------*/
@@ -13,12 +12,10 @@ body {
 
 .header_nav {
   width: 100%;
-  margin: 0 auto;
 }
 
 nav {
   background: #333;
-  display: flex;
 }
 
 nav ul {
@@ -29,7 +26,6 @@ nav ul {
 
 nav a {
   text-decoration: none;
-  text-align: center;
   color: #fff;
   font-size: 20px; 
   display: block;
@@ -105,7 +101,7 @@ nav a {
 
 .post_main_info {
     display: flex;
-    border: 2px dotted #4d4dff;
+    border-bottom: 2px solid #8080ff;
     flex-basis: auto;
     justify-content: center;
     padding: 5px;
@@ -120,16 +116,15 @@ nav a {
 
 .post_created_by {
     display: flex;
-    border: 2px dotted #4d4dff;
     flex-direction: column;
     flex-basis: 50%;
     padding: 5px;
+    justify-content: flex-end;
 }
 
 
 .post_created_at {
     display: flex;
-    border: 2px dotted #4d4dff;
     flex-direction: column;
     flex-basis: 50%;
     padding: 5px;
@@ -188,25 +183,13 @@ nav a {
     justify-content: center;
 }
 
-
-/*.post_info {*/
-/*    display: flex;*/
-/*    flex-basis: 82%;*/
-/*    flex-direction: column;*/
-/*    justify-content: center;*/
-/*    padding: 5px;*/
-/*}*/
-
-/*.vote_info {*/
-/*    display: flex;*/
-/*    flex-basis: 18%;*/
-/*    flex-direction: column;*/
-/*    justify-content: center;*/
-/*    padding: 5px;*/
-
-/*}*/
+/*--------------------------------------------------------------------------------------------------*/
 
 
+.username_taken {
+    color: red;
+    font-size: 10px;
+}
 
 /*--------------------------------------------------------------------------------------------------*/
 /*FOOTER*/

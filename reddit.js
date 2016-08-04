@@ -661,6 +661,19 @@ module.exports = function RedditAPI(conn) {
         
       );
       
+    },
+    
+    getVotesForPost: function(postId, callback) {
+      conn.query(`
+        SELECT sum(vote) AS voteForPost from votes WHERE postId = ?`, [postId]
+        ,function (err, result) {
+          if (err) {
+            callback(err);
+          }
+          else {
+            callback(null, result[0].voteForPost);
+          }
+      });
     }
 
   }

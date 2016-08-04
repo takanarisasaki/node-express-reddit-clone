@@ -426,7 +426,7 @@ app.post('/signup', function(request, response) {
 		//request.body prints the object with username and password entered from get
 		//console.log(request.body);	
 		if (err) {
-			response.status(400).send('Username already exists! Please try another one!');
+			response.send('error');
 		}
 		else {
 			response.redirect('/login/account-created-success');
@@ -466,6 +466,7 @@ app.post('/login/account-created-success', function(request, response) {
 		}
 	});
 });
+
 
 app.get('/createPost/post-created-success', function(request, response) {
 	
@@ -607,22 +608,32 @@ app.get('/:sort?', function(request, response) {
 	
 });
 
-//sort the posts according to 'top', 'new', 'controversial'
-app.post('/:sort?', function(request, response) {
-	//console.log('IN THE POST')
-	var sortTypeStringified = request.params.sort;
-	//console.log(sortTypeStringified, 'WHAT THIS?');
-	
+
+app.post('/votePost', function(request, response){
 	redditAPI.createOrUpdateVote({userId: request.loggedInUser.userId, postId: parseInt(request.body.postId), vote: parseInt(request.body.vote)}, function(err, result) {
 		if (err) {
 			response.status(400).send('There is an error');
 		}
 		else {
-			response.redirect(`/${sortTypeStringified}`);
+			
+			redditAPI.getVotesForPost(request.body.postId, function(err, voteScoreForPost) {
+				if (err) {
+					response.send(err);
+				}
+				else {
+					//response.json(voteScoreForPost);
+					//console.log('VOTE SCORE:', voteScoreForPost);
+					
+					
+					response.send({score:voteScoreForPost});
+					
+				}
+			})
+			
 		}
 	});
+})
 
-});
 
 
 
@@ -633,6 +644,3 @@ var server = app.listen(process.env.PORT, process.env.IP, function() {
 
 	console.log('Example app listening at http://%s:%s', host, port);
 });
-
-
-

@@ -8,7 +8,6 @@
         <header>
             <% include ../partials/header %>
         </header>
-
         
         <main>
             
@@ -36,19 +35,19 @@
         		    
         			<% posts.forEach(function(post) { %>
         			
-            			<div class="each_post">
+            			<li class="each_post">
             			    
             			    <div class="post_info">
             			        <div class="post_main_info">
-            			            <li> <strong> <%=post.title%> </strong> / </li>
-            			            <li> <a href= <%=post.url%> > <em> <%=post.url%> </em> </a> </li>
+            			            <p> <strong> <%=post.title%> </strong> / </p>
+            			            <p> <a href= <%=post.url%> > <em> <%=post.url%> </em> </a> </p>
             			        </div>
                 			    <div class="post_sub_info">
                 			        <div class="post_created_by">
-                			           <li> Created by: <%=post.user.username%> </li> 
+                			           <p> Created by: <%=post.user.username%> </p> 
                 			        </div>
                 			        <div class="post_created_at">
-                			            <li> Created at: <%=post.createdAt%> </li>
+                			            <p> Created at: <%=post.createdAt%> </p>
                 			        </div>
                 			    </div>
             			    </div>
@@ -56,28 +55,26 @@
             			    <div class="vote_info">
             			        
             			        <div class="upvote">
-                    			    <form action="/<%=sort%>" method="post">
+                    			    <form class="postVote" action="/<%=sort%>" method="post">
             							<input type="hidden" name="vote" value="1"> 
             							<input type="hidden" name="postId" value="<%=post.id%>">
-            							<input type="hidden" name="userId" value="<%=request.loggedInUser.userId%>">
             							<button type="submit"> upvote this </button>
             						</form>
         						</div>
         						
         						<div class="vote_score">
-                                    <li> Vote Score: <%=post.voteScore%> </li> <br/>  
+                                    <p id="post_score_<%=post.id%>"> Vote Score: <%=post.voteScore%> </p> <br/>  
                                 </div>
                                 
                                 <div class="downvote">
-            						<form action="/<%=sort%>" method="post">
+            						<form class="postVote" action="/<%=sort%>" method="post">
             							<input type="hidden" name="vote" value="-1">
             							<input type="hidden" name="postId" value="<%=post.id%>">
-            							<input type="hidden" name="userId" value="<%=request.loggedInUser.userId%>">
             							<button type="submit"> downvote this </button>
             						</form>
         						</div>
         					</div>
-    					</div>
+    					</li>
 					
         			    <br/>
         			<% }); %>
@@ -94,5 +91,8 @@
         <footer>
             <% include ../partials/footer %>
         </footer>
+        
+        <script src='js/main.js'></script>
+        
     </body>
 </html>
