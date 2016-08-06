@@ -3,20 +3,27 @@
 <html>
     <head>
         <title> Create Post</title>
-        <link style="text/css" rel="stylesheet" href="/css/style.css"
+        <link style="text/css" rel="stylesheet" href="/css/style.css">
+        <link rel="icon" href="../images/logo.png" height="15" width="15">
     </head>
     
-    <body>
+    <body class="create_post_page">
         <p> Enter the title, URL, and subreddit ID to create a page! </p>
-    	<form action="/createPost" method="POST"> 
+    	<form id="create_post" action="/createPost" method="POST"> 
         	Title: <input type="text" name="title" placeholder="Enter the title:"> <br/>
-    		URL: <input type="text" name="url" placeholder="Enter the url:"> <br/>
-    		<button type="submit">Post!</button>
-    		<div class="suggest_title_button">
-        		<input type="button" value="suggest title" />
-        	</div>
+    		URL: <input type="text" name="url" placeholder="Enter the url:">
+    		<div>
+    		    <button type="submit"> Post! </button>
+    		</div>
     	</form>
     	
+    	 <form id="suggest_title" action="/createPost" method="POST">
+    	     <button type="submit"> Suggest Title! </button>
+    	 </form>
+    	
     </body>
+    
+    <script src='js/jquery.js'></script>
+    <script src='js/main.js'></script>
     
 </html>

@@ -586,7 +586,7 @@ module.exports = function RedditAPI(conn) {
     checkLogin: function(username, password, callback) {
       conn.query(`SELECT * FROM users WHERE username = ?`, [username], function(err, result) {
         if (result.length === 0) {
-          callback(new Error('username or password incorrect')); // in this case the user does not exists
+          callback('err'); // in this case the user does not exists
         }
         else {
           var user = result[0];
@@ -596,7 +596,7 @@ module.exports = function RedditAPI(conn) {
               callback(null, user);
             }
             else {
-              callback(new Error('username or password incorrect')); // in this case the password is wrong, but we reply with the same error
+              callback('err'); // in this case the password is wrong, but we reply with the same error
             }
           });
         }

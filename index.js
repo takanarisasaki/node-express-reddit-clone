@@ -17,7 +17,8 @@ var cookieParser = require('cookie-parser');
 var bcrypt = require('bcrypt');
 var secureRandom = require('secure-random');
 var express = require('express');
-
+var fetch = require("request");
+var cheerio = require("cheerio");
 //starts the server
 var app = express();
 
@@ -249,131 +250,6 @@ function getFivePosts(userId) {
 //POST - Submits data to be processed to a specified resource
 
 
-// function createLiForLoggedIn(post, request, response, sort) {
-// 	//console.log('it comes here', sort)
-// 	//console.log("EVERY POSTS", post);
-// 	return `<!DOCTYPE html>
-// 			<html>
-// 				<head>
-// 					<title> Create Post for Loggin </title>
-// 					<link type="text/css" rel="stylesheet" href="styles.css"/>
-// 				</head>
-// 				<body>
-// 					<li>
-// 						<p> Post Title: ${post.title} </p>
-// 						<a href=${post.url}> ${post.url} </a>
-// 							<p> Post ID: ${post.id} </p>
-// 							<p> Post Username: ${post.user.username} </p>
-// 							<p> Post Created at: ${post.createdAt} </p>
-// 							<p> Vote Score: ${post.voteScore} </p>
-							
-// 							<form action="/${sort}" method="post">
-// 								<input type="hidden" name="vote" value="1"> 
-// 								<input type="hidden" name="postId" value="${post.id}">
-// 								<input type="hidden" name="userId" value="${request.loggedInUser.userId}">
-// 								<button type="submit">upvote this</button>
-// 							</form>
-// 							<form action="/${sort}" method="post">
-// 								<input type="hidden" name="vote" value="-1">
-// 								<input type="hidden" name="postId" value="${post.id}">
-// 								<input type="hidden" name="userId" value="${request.loggedInUser.userId}">
-// 								<button type="submit">downvote this</button>
-// 							</form>
-// 						</li>
-// 				</body>
-// 			</html>
-// 		`;
-// 	}
-// function makeHtmlForLoggedIn(posts, request, response, sort) {
-// 	var sendHtml = `
-		
-// 		<b> You are currently logged in! <br> <br> </b>
-		
-// 		<form action="/logout" method="POST"> 
-// 			<button type="submit">logout!</button>
-// 		</form>
-		
-		
-		
-		
-// 		<h2> <u> CREATE: </u> </h2>
-// 		<a href="/createPost"> CREATE A POST! </a> <br> <br>
-		
-		
-// 		<div id="contents">
-// 			<h1>List of posts</h1>
-// 			<ul class="contents-list">
-							  
-// 			${posts.map(function(post) {
-// 				return createLiForLoggedIn(post, request, response, sort);
-// 			}).join("")}
-			
-// 			</ul>
-// 		</div>
-// 	`;
-// 	//console.log("USERID", request.loggedInUser.userId);
-// 	return sendHtml;
-// }
-// function createLiForNotLoggedIn(post, request, response, sort) {
-
-// 		return `
-// 				<li>
-// 					<p> Post Title: ${post.title} </p>
-// 					<a href=${post.url}> ${post.url} </a>
-// 						<p> Post ID: ${post.id} </p>
-// 						<p> Post Username: ${post.user.username} </p>
-// 						<p> Post Created at: ${post.createdAt} </p>
-// 						<p> Vote Score: ${post.voteScore} </p>
-// 				</li>
-// 			`;
-// }
-// function makeHtmlForNotLoggedIn(posts, request, response, sort) {
-// 	var sendHtml = `
-	
-// 		<form action="/login" method="POST"> 
-// 			<div>
-// 	    	<input type="text" name="username" placeholder="Enter your username">
-// 			</div>
-// 			<div>
-// 				<input type="password" name="password" placeholder="Enter your password">
-// 			</div>
-// 			<button type="submit">Login!</button>
-// 		</form>
-
-// 		<form action="/signup" method="POST"> 
-// 			<div>
-// 	    	<input type="text" name="username" placeholder="Enter your username">
-// 			</div>
-// 			<div>
-// 				<input type="text" name="password" placeholder="Enter your password">
-// 			</div>
-// 			<button type="submit" onclick="myFunction()"> Sign up! </button>
-// 		</form>
-		
-		
-// 		<h2> <u> SELECT A CATEGORY: </u> </h2>
-		
-// 		<a href="/"> HOT </a> <br> <br>
-// 		<a href="/top"> TOP </a> <br> <br>
-// 		<a href="/new"> NEW </a> <br> <br>
-// 		<div id="contents">
-		
-		
-// 		<h1>List of posts:</h1>
-// 		<ul class="contents-list">
-							  
-// 			${posts.map(function(post) {
-// 				return createLiForNotLoggedIn(post, request, response, sort);
-// 			}).join("")}
-			
-// 			</ul>
-// 		</div>
-// 	`;
-// 	//console.log("USERID", request.loggedInUser.userId);
-// 	return sendHtml;	
-// }
-
-
 
 //login with an existing username and the valid password
 app.get('/login', function(request, response) {
@@ -387,8 +263,9 @@ app.get('/login', function(request, response) {
 app.post('/login', function(request, response) {
 	//console.log("HALLO", request.body);
 	redditAPI.checkLogin(request.body.username, request.body.password, function(err, user) {
-		if (err) {
-			response.status(401).send(err.message);
+		//console.log("ERR", err)
+		if (err === 'err') {
+			response.send("Username or Password Incorrect");
 		}
 		else {
 			//console.log("WHAT", user);
@@ -418,20 +295,26 @@ app.get('/signup', function(request, response) {
 });
 //signup with a non-existing username, hashes the password and store them in the database inside users table
 app.post('/signup', function(request, response) {
-
-	redditAPI.createUser({
-		username: request.body.username,
-		password: request.body.password
-	}, function(err, result) {
-		//request.body prints the object with username and password entered from get
-		//console.log(request.body);	
-		if (err) {
-			response.send('error');
-		}
-		else {
-			response.redirect('/login/account-created-success');
-		}
-	});
+	
+	if (!request.body.username || !request.body.password) {
+		response.send('Enter username and password');
+	}
+	
+	else {
+		redditAPI.createUser({
+			username: request.body.username,
+			password: request.body.password
+		}, function(err, result) {
+			//request.body prints the object with username and password entered from get
+			//console.log(request.body);	
+			if (err) {
+				response.send('username already taken');
+			}
+			else {
+				response.redirect('/login/account-created-success');
+			}
+		});
+	}
 });
 
 
@@ -533,18 +416,57 @@ app.post('/createPost', function(request, response) {
 		response.status(401).send('You must be logged in to create content!');
 	}
 	else {
-		//console.log("LOGGED IN USER", request.loggedInUser);
-		// here we have a logged in user, let's create the post with the user!
-		redditAPI.createPost({
-			title: request.body.title,
-			url: request.body.url,
-			userId: request.loggedInUser.userId
-		}, request.body.subredditId, function(err, post) {
-			// do something with the post object or just response OK to the user :)
-			
-			response.render('pages/post-created-successfully.ejs');
-		});
+		
+		// console.log("I come in here");
+		// console.log("TITLE", request.body.title);
+		// console.log("URL", request.body.url)
+		
+		//If the user did not enter the title or url
+		if (!request.body.title || !request.body.url) {
+			response.send("You have to fill in the title and the url");
+		}
+		
+		else {
+			//console.log("LOGGED IN USER", request.loggedInUser);
+			// here we have a logged in user, let's create the post with the user!
+			redditAPI.createPost({
+				title: request.body.title,
+				url: request.body.url,
+				userId: request.loggedInUser.userId
+			}, request.body.subredditId, function(err, post) {
+				// do something with the post object or just response OK to the user :)
+				
+				//response.render('pages/post-created-successfully.ejs');
+				response.send('You have successfully created the post')
+			});
+		}
 	}
+});
+
+
+app.get('/createPost/created-successfully', function(request, response) {
+	response.render('pages/post-created-successfully.ejs');
+})
+
+
+app.post('/suggestTitle', function(request, response) {
+	
+	//console.log("URL?1", request.body.url)
+	//request.body.url contains the url from main.js (what we entered in URL box in web server)
+	fetch(request.body.url, function(err, res, body){
+		
+		if (err) {
+			response.send('Enter a valid HTTP URL');
+		}
+		
+		else {
+			var $ = cheerio.load(body);
+			//console.log('$', $);
+			//console.log('$title', $('title').text());
+			response.send($('title').text());
+		}
+	});
+	
 });
 
 
@@ -633,8 +555,6 @@ app.post('/votePost', function(request, response){
 		}
 	});
 })
-
-
 
 
 
